@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
@@ -8,7 +7,10 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '@/views/Inicio.vue')
   },
   {
     path: '/usuarios',
@@ -33,6 +35,38 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '@/views/DetallesUsuario.vue')
+  },
+  {
+    path: '/historial-pagos',
+    name: 'historial-pagos',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '@/views/HistorialPagos.vue')
+  },
+  {
+    path: '/solicitud-prestamo',
+    name: 'solicitud-prestamo',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '@/views/SolicitudesPrestamo.vue')
+  },
+  {
+    path: '/proyectos',
+    name: 'proyectos',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '@/views/GestionProyectos.vue')
+  },
+  {
+    path: '/detalles-proyecto/:id',
+    name: 'detalles-proyecto',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '@/views/DetallesProyecto.vue')
   },
 ]
 

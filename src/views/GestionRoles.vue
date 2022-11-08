@@ -139,6 +139,7 @@
 <script>
 import { defineComponent } from 'vue'
 import { getData, postData, deleteData, putData } from "@/request/Request.js";
+import Swal from 'sweetalert2';
 
 export default defineComponent({
   name: 'gestionRoles',
@@ -168,10 +169,8 @@ export default defineComponent({
         }
 				if (Object.keys(this.errors).length == 0) {
           if(this.editando){
-            //await this.editarUsario();
 						await this.editarRol();
           } else {
-            //await this.crearUsuario();
 						await this.crearRol();
           }
           this.resetForm();
@@ -181,10 +180,12 @@ export default defineComponent({
 			},
 			resetForm() {
 				this.dialog = false;
+				this.editando = false;
 				this.errors = {};
 				this.usuarrolio = {
 					nombre: "",
 				}
+				this.getRoles();
 			},
 			async getRoles() {
           await getData(`roles`)
@@ -192,14 +193,13 @@ export default defineComponent({
                   this.roles = res;
               })
               .catch(error => {
-                  this.$swal.fire({
+                  Swal.fire({
                       title: "¡Error!",
                       text: error,
                       icon: "error",
                       confirmButtonText: "Aceptar",
                   });
               })
-				console.table(this.roles);
       },
 			deletedSelect(id) {
         this.deleteId = id;
@@ -209,30 +209,20 @@ export default defineComponent({
         if(eliminar){
           await deleteData(`roles/${this.deleteId}`, this.deleteId)
             .then(res => {
-              /* if(!res.isSuccess) {
-                this.$swal.fire({
-                  title: "¡Error al eliminar el espacio!",
-                  text: res.message,
-                  icon: "error",
-                  confirmButtonText: "Aceptar",
-                });
-              }
-              this.$swal.fire({
-                title: "¡Espacio eliminado Exitosamente!",
+                Swal.fire({
+                title: "¡Rol eliminado Exitosamente!",
                 text: res.message,
                 icon: "success",
                 confirmButtonText: "Aceptar",
-              }); */
-							console.log(res);
+              });
             })
             .catch(error => {
-              /*  this.$swal.fire({
-                title: "¡Error eliminando el espacio!",
+              	Swal.fire({
+                title: "¡Error eliminando el rol!",
                 text: error,
                 icon: "error",
                 confirmButtonText: "Aceptar",
-              }); */
-							console.log(error)
+              }); 
             })
             this.dialogDelete = false;
             this.deleteId = 0;
@@ -241,40 +231,24 @@ export default defineComponent({
         }
       },
 			async crearRol() {
+				this.editando = false;
         this.dialog = false;
-          /* this.$swal.fire({
-          title: "¡Validando!",
-          allowOutsideClick: false,
-          didOpen: () => {
-            this.$swal.showLoading();
-          },
-        }); */
         await postData("roles", this.rol, false)
           .then(res => {
-              /* if(!res.isSuccess) {
-                this.$swal.fire({
-                  title: "¡Error al crear el espacio!",
-                  text: res.message,
-                  icon: "error",
-                  confirmButtonText: "Aceptar",
-                });
-              } */
-              /* this.$swal.fire({
-                title: "¡Espacio creado Exitosamente!",
+              	Swal.fire({
+                title: "¡Rol creado Exitosamente!",
                 text: res.message,
                 icon: "success",
                 confirmButtonText: "Aceptar",
-              }) */
-							console.log('Creado', res);
+              }) 
             })
           .catch(error => {
-            /* this.$swal.fire({
-              title: "¡Error al crear el espacio!",
+            	Swal.fire({
+              title: "¡Error al crear el rol!",
               text: error,
               icon: "error",
               confirmButtonText: "Aceptar",
-            }); */
-						console.log(error)
+            }); 
           });
         this.getRoles();
       },
@@ -285,46 +259,30 @@ export default defineComponent({
             this.rol = rol;
           }
         });
-				console.log(this.rol)
         this.editId = id;
         this.editando = true;
       },
 			async editarRol() {
           this.dialog = false;
-          /* this.$swal.fire({
-          title: "¡Validando!",
-          allowOutsideClick: false,
-          didOpen: () => {
-            this.$swal.showLoading();
-          },
-        }); */
         await putData(`roles/${this.editId}`, this.rol)
           .then(res => {
-              /* if(!res.isSuccess) {
-                this.$swal.fire({
-                  title: "¡Error al editar el espacio!",
-                  text: res.message,
-                  icon: "error",
-                  confirmButtonText: "Aceptar",
-                });
-              }
-              this.$swal.fire({
-                title: "¡Espacio editado Exitosamente!",
+              	Swal.fire({
+                title: "¡Rol editado Exitosamente!",
                 text: res.message,
                 icon: "success",
                 confirmButtonText: "Aceptar",
-              }); */
-							console.log(res)
+              }); 
           })
           .catch(error => {
-            /* this.$swal.fire({
-                title: "¡Error editando el espacio!",
+            	Swal.fire({
+                title: "¡Error editando el rol!",
                 text: error,
                 icon: "error",
                 confirmButtonText: "Aceptar",
-              }); */
-							console.log(error);
+              }); 
           })
+
+					this.resetForm();
       },
 	},
 	created() {

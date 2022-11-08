@@ -22,7 +22,7 @@ export const postData = async function (url = "", data = {}, needToken) {
       referrerPolicy: "no-referrer",
       body: JSON.stringify(data),
     });
-    return response.json();
+    return response;
   };
   
   export const getData = async function (url = "", params) {
@@ -75,5 +75,5 @@ export const postData = async function (url = "", data = {}, needToken) {
       referrerPolicy: "no-referrer",
       body: JSON.stringify(data),
     });
-    return response.json();
+    return response;
   };

@@ -218,6 +218,8 @@
 import { defineComponent } from "vue";
 import { getData, postData, deleteData, putData } from "@/request/Request.js";
 import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosParametrizados';
+import Swal from 'sweetalert2';
+
 	export default defineComponent({
 		name: 'GestionUsuarios',
 		data: () => ({
@@ -292,7 +294,8 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
 					ahorro_total: 0,
 					tipo_documento_id: 0,
 					rol_id: 0
-				}
+				};
+				this.getUsuarios();
 			},
 			async getUsuarios() {
           await getData(`usuarios`)
@@ -307,7 +310,6 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
                       confirmButtonText: "Aceptar",
                   });
               })
-				console.table(this.usuarios);
       },
 			deletedSelect(id) {
         this.deleteId = id;
@@ -317,30 +319,20 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
         if(eliminar){
           await deleteData(`usuarios/${this.deleteId}`, this.deleteId)
             .then(res => {
-              /* if(!res.isSuccess) {
-                this.$swal.fire({
-                  title: "¡Error al eliminar el espacio!",
-                  text: res.message,
-                  icon: "error",
-                  confirmButtonText: "Aceptar",
-                });
-              }
-              this.$swal.fire({
-                title: "¡Espacio eliminado Exitosamente!",
+              Swal.fire({
+                title: "Usuario eliminado Exitosamente!",
                 text: res.message,
                 icon: "success",
                 confirmButtonText: "Aceptar",
-              }); */
-							console.log(res);
+              }); 
             })
             .catch(error => {
-              /*  this.$swal.fire({
-                title: "¡Error eliminando el espacio!",
+                this.$swal.fire({
+                title: "¡Error eliminando el usuario!",
                 text: error,
                 icon: "error",
                 confirmButtonText: "Aceptar",
-              }); */
-							console.log(error)
+              });
             })
             this.dialogDelete = false;
             this.deleteId = 0;
@@ -350,39 +342,22 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
       },
 			async crearUsuario() {
         this.dialog = false;
-          /* this.$swal.fire({
-          title: "¡Validando!",
-          allowOutsideClick: false,
-          didOpen: () => {
-            this.$swal.showLoading();
-          },
-        }); */
         await postData("usuarios", this.usuario, false)
           .then(res => {
-              /* if(!res.isSuccess) {
-                this.$swal.fire({
-                  title: "¡Error al crear el espacio!",
-                  text: res.message,
-                  icon: "error",
-                  confirmButtonText: "Aceptar",
-                });
-              } */
-              /* this.$swal.fire({
-                title: "¡Espacio creado Exitosamente!",
+                Swal.fire({
+                title: "Usuario creado Exitosamente!",
                 text: res.message,
                 icon: "success",
                 confirmButtonText: "Aceptar",
-              }) */
-							console.log('Creado', res);
+              })
             })
           .catch(error => {
-            /* this.$swal.fire({
-              title: "¡Error al crear el espacio!",
+              Swal.fire({
+              title: "¡Error al crear el usuario!",
               text: error,
               icon: "error",
               confirmButtonText: "Aceptar",
-            }); */
-						console.log(error)
+            }); 
           });
         this.getUsuarios();
       },
@@ -395,45 +370,27 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
             this.usuario = usuario;
           }
         });
-				console.log(this.usuario)
         this.editId = id;
         this.editando = true;
       },
 			async editarUsario() {
           this.dialog = false;
-          /* this.$swal.fire({
-          title: "¡Validando!",
-          allowOutsideClick: false,
-          didOpen: () => {
-            this.$swal.showLoading();
-          },
-        }); */
         await putData(`usuarios/${this.editId}`, this.usuario)
           .then(res => {
-              /* if(!res.isSuccess) {
-                this.$swal.fire({
-                  title: "¡Error al editar el espacio!",
-                  text: res.message,
-                  icon: "error",
-                  confirmButtonText: "Aceptar",
-                });
-              }
-              this.$swal.fire({
-                title: "¡Espacio editado Exitosamente!",
+              Swal.fire({
+                title: "¡Usuario editado Exitosamente!",
                 text: res.message,
                 icon: "success",
                 confirmButtonText: "Aceptar",
-              }); */
-							console.log(res)
+              }); 
           })
           .catch(error => {
-            /* this.$swal.fire({
-                title: "¡Error editando el espacio!",
+            		this.$swal.fire({
+                title: "¡Error editando el usuario!",
                 text: error,
                 icon: "error",
                 confirmButtonText: "Aceptar",
-              }); */
-							console.log(error);
+              }); 
           })
       },
 			async obtenerRoles() {
@@ -448,11 +405,9 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
         await getTiposDocumento()
           .then(res => {
             if(res) {
-							console.log("res: ",res)
               this.tiposDocumento = res
             }
           })
-				console.log(this.tiposDocumento)
       },
 			async obtenerTipoDocumento(id) {
         await getTipoDocumento(id)

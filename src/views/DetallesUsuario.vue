@@ -26,7 +26,10 @@
 								Cuotas
 							</v-tab>
 							<v-tab>
-								{Inversiones
+								Inversiones 
+							</v-tab>
+							<v-tab>
+								Prestamos
 							</v-tab>
 						</v-tabs>
 
@@ -51,8 +54,9 @@
 												</v-chip>
 											</template>
 											<template  v-slot:item.pago="{ item }">
-												<v-btn fab outlined color="success" class="ma-1" v-if="item.estado == 0">
+												<v-btn small fab outlined color="success" class="ma-1" v-if="item.estado == 0">
 													<v-icon
+													small
 														class="mr-2"
 														color="green"
 													>
@@ -70,7 +74,16 @@
 							>
 								<v-card flat>
 									<v-card-text>
-										Innversiones
+										Innversiones Usuario
+									</v-card-text>
+								</v-card>
+							</v-tab-item>
+
+							<v-tab-item
+							>
+								<v-card flat>
+									<v-card-text>
+										Prestamos Usuario
 									</v-card-text>
 								</v-card>
 							</v-tab-item>
@@ -82,7 +95,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { getData, postData, deleteData, putData } from "@/request/Request.js";
+import { getData} from "@/request/Request.js";
 
 export default defineComponent({
     name: 'DetallesUsuario',
@@ -105,7 +118,6 @@ export default defineComponent({
     }),
     methods: {
 			async getUsuario() {
-				console.log(this.$route.params.id)
 				await getData(`usuarios/${this.$route.params.id}`)
 					.then(res => {
 						this.usuario = res[0];
@@ -113,7 +125,6 @@ export default defineComponent({
 					.catch(error => {
 						console.log(" Error ", error);
 					});
-					console.log(this.usuario);
 			},
 			async getCuotas() {
 				await getData(`pagos/usuario/${this.$route.params.id}`)
@@ -123,7 +134,6 @@ export default defineComponent({
 					.catch(error => {
 						console.log(" Error ", error);
 					});
-					console.log(this.cuotas);
 			},
 			getColor (estado) {
         if (estado == 0) return 'red'
