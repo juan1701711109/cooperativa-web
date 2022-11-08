@@ -15,7 +15,20 @@ export const getRoles = async function () {
 
 export const getTiposDocumento = async function () {
     let docs = [];
-    await getData("docs")
+    await getData("tipos-documento")
+      .then(res => {
+          docs = res
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  
+      return docs;
+  };
+
+  export const getTipoDocumento = async function (id) {
+    let docs = [];
+    await getData(`tipos-documento/${id}`)
       .then(res => {
           docs = res
       })

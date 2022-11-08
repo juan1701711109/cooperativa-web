@@ -1,12 +1,14 @@
 <template>
-  <div class="ml-5 mt-3">
+  <div class="ml-2">
     <v-row>
-      <h1>Gestion Usuarios</h1>
+			<v-col>
+				<h1>Gestion de Roles</h1>
+			</v-col>
     </v-row>
-    <v-row>
+		<v-row>
       <v-col>
         <v-btn
-          class="primario btn-normal ml-3 mt-2"
+          class="primario btn-normal ml-3"
 					@click="prepararCreacion"
         >
         <v-icon>
@@ -16,9 +18,9 @@
       </v-col>
     </v-row>
 
-		<!-- Usuarios -->
+		<!-- Get Roles -->
 		<v-row wrap class="mx-2">
-			<v-col cols="12" sm="6" md="4" lg="3" v-for="usuario in usuarios" :key="usuario.id">
+			<v-col cols="12" sm="6" md="4" lg="3" v-for="rol in roles" :key="rol.id">
 				<v-card
 				class="mx-auto my-1"
 					max-width="374"
@@ -27,14 +29,7 @@
 					link
 				>
 					<v-card-text>
-						<h2>{{usuario.nombre}}</h2>
-						<div>
-							<p>{{usuario.numero_documento}}</p>
-						</div>
-						<div>
-							<span><p>Monto mensual: ${{usuario.monto_mensual}}</p></span>
-							<p>Ahorro: ${{usuario.ahorro_total}}</p>
-						</div>
+						<h2>{{rol.nombre}}</h2>
 					</v-card-text>
 					<v-card-actions>
               <v-row>
@@ -42,7 +37,7 @@
                   <v-btn
                     tile
                     color="success"
-										@click="cargarDatosUsuarioEditar(usuario.id)"
+										@click="cargarDatosRolEditar(rol.id)"
                   >
                     <v-icon left>
                       mdi-pencil
@@ -53,7 +48,7 @@
                 <v-col cols="6">
                   <v-btn
                     color="error"
-										@click="deletedSelect(usuario.id)"
+										@click="deletedSelect(rol.id)"
                   >
                     <v-icon left>
                       mdi-delete
@@ -67,7 +62,7 @@
 			</v-col>
 		</v-row>
 
-		<!-- Modal Crear/Editar Usuario -->
+		<!-- Modal Crear/Editar Rol -->
 		<template>
     <v-row  justify="center">
       <v-dialog
@@ -78,82 +73,25 @@
         <v-card class="main">
           <v-card-title>
             <span class="text-h5 texto-blanco ml-5 mt-1">
-              {{editando ? 'Editar Usuario' : 'Crear Usuario'}}
+              {{editando ? 'Editar Rol' : 'Crear Rol'}}
             </span>
           </v-card-title>
           <v-card-text>
             <v-container>
               <form @submit.prevent="verificarFormulario" novalidate="true">
-                <v-row>
-                  <v-col
+								<v-row>
+									<v-col
                     cols="12"
-                    sm="6"
                   >
-                    <input
+									<input
                       class="input"
-                      v-model="usuario.nombre"
+                      v-model="rol.nombre"
                       placeholder="Nombre"
                       required
                     />
-                      <template v-if="errors.nombre">
-                        <p class="errorF">*{{ errors.nombre }}</p>
-                      </template>
-                  </v-col>
-									<v-col
-                    cols="12"
-                    sm="6"
-                  >
-                    <select v-model="usuario.rol_id"  class="select" name="rol">
-                        <option value="0" selected disabled hidden>Seleccione el rol</option>
-                        <option v-for="rol in roles" :key="rol.id" :value="rol.id">{{rol.nombre}}</option>
-                    </select>
                     <template v-if="errors.rol">
                       <p class="errorF">*{{ errors.rol }}</p>
                     </template>
-                  </v-col>
-                </v-row>
-								<v-row>
-									<v-col
-                    cols="12"
-                    sm="6"
-                  >
-                    <select v-model="usuario.tipo_documento_id"  class="select" name="tipo_doc">
-                        <option value="0" selected disabled hidden>Seleccione el tipo de documento</option>
-                        <option v-for="tdoc in tiposDocumento" :key="tdoc.id" :value="tdoc.id">{{tdoc.nombre}}</option>
-                    </select>
-                    <template v-if="errors.tipo_documento">
-                      <p class="errorF">*{{ errors.tipo_documento }}</p>
-                    </template>
-                  </v-col>
-									<v-col
-                    cols="12"
-                    sm="6"
-                  >
-                    <input
-                      class="input"
-                      v-model="usuario.numero_documento"
-                      placeholder="Numero Documento"
-                      required
-                    />
-                      <template v-if="errors.numero_documento">
-                        <p class="errorF">*{{ errors.numero_documento }}</p>
-                      </template>
-                  </v-col>
-								</v-row>
-								<v-row>
-									<v-col
-                    cols="12"
-                    sm="6"
-                  >
-                    <input
-                      class="input"
-                      v-model="usuario.monto_mensual"
-                      placeholder="Monto Mensual"
-                      required
-                    />
-                      <template v-if="errors.monto_mensual">
-                        <p class="errorF">*{{ errors.monto_mensual }}</p>
-                      </template>
                   </v-col>
 								</v-row>
                 <v-spacer></v-spacer>
@@ -180,13 +118,13 @@
       >
         <v-container class="main">
           <v-container>
-            <span class="text-h5 text-center texto-blanco mt-1">¿Seguro que desea eliminar el usuario?</span>
+            <span class="text-h5 text-center texto-blanco mt-1">¿Seguro que desea eliminar el rol?</span>
           </v-container>
           <v-container>
                 <v-spacer></v-spacer>
                 <v-row>
                   <v-container class="d-flex justify-center">
-                    <input class="btn secundario mr-5" type="button" value="Confirmar" @click="eliminarUsuario(true)">
+                    <input class="btn secundario mr-5" type="button" value="Confirmar" @click="eliminarRol(true)">
                     <input class="btn rojo " type="button" value="Cancelar" @click="dialogDelete = false">
                   </v-container>
                 </v-row>
@@ -195,72 +133,46 @@
       </v-dialog>
     </v-row>
   </template>
-
-    </div>
+  </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue'
 import { getData, postData, deleteData, putData } from "@/request/Request.js";
-import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosParametrizados';
-	export default defineComponent({
-		name: 'GestionUsuarios',
-		data: () => ({
-			usuarios: [],
-			usuario: {
-        nombre: "",
-        numero_documento: "",
-        monto_mensual: null,
-        ahorro_total: 0,
-        tipo_documento_id: 0,
-        rol_id: 0,
-      },
-			errors: {},
-			roles: {},
-			dialog: false,
-			dialogDelete: false,
-			deleteId: 0,
-			editando: false,
-			roles: [],
-			tiposDocumento: [], 
-			tipo: ""
-		}),
-		methods: {
-			prepararCreacion() {
-				this.dialog = true;
-				this.editando = false;
-				this.getUsuarios();
-				this.obtenerRoles();
-				this.obtenerTiposDocumento();
-			},
-			async verificarFormulario() {
+
+export default defineComponent({
+  name: 'gestionRoles',
+	data: () => ({
+		roles: [],
+		rol: {
+			id: null,
+			nombre: '',
+		},
+		dialog: false,
+		dialogDelete: false,
+		deleteId: 0,
+		editId: 0,
+		editando: false,
+		errors: {},
+	}),
+	methods: {
+		prepararCreacion() {
+			this.dialog = true;
+			this.editando = false;
+			this.getRoles();
+		},
+		async verificarFormulario() {
 				this.errors = {};
-        if (!this.usuario.nombre) {
-          this.errors.nombre = "El nombre es requerido.";
-        }
-        else if (this.usuario.nombre.length < 3) {
-          this.errors.nombre = "Tamaño incorrecto";
-        }
-				if (this.usuario.rol_id == 0) {
-          this.errors.rol = "Debe seleccionar un rol.";
-        }
-				if (this.usuario.tipo_documento_id == 0) {
-          this.errors.tipo_documento = "Debe seleccionar un documento.";
-        }
-				if (!this.usuario.numero_documento) {
-          this.errors.numero_documento = "El documento es requerido.";
-        }
-				if (!this.usuario.monto_mensual) {
-          this.errors.monto_mensual = "El monto es requerido.";
-        }
-				else if (this.usuario.monto_mensual < 30000) {
-          this.errors.monto_mensual = "El monto debe ser mayor a $30.000";
+				if (!this.rol.nombre) {
+          this.errors.rol = "Debe ingresar el nombre del rol";
         }
 				if (Object.keys(this.errors).length == 0) {
           if(this.editando){
-            await this.editarUsario();
+            //await this.editarUsario();
+						await this.editarRol();
           } else {
-            await this.crearUsuario();
+            //await this.crearUsuario();
+						await this.crearRol();
           }
           this.resetForm();
         } else{
@@ -270,19 +182,14 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
 			resetForm() {
 				this.dialog = false;
 				this.errors = {};
-				this.usuario = {
+				this.usuarrolio = {
 					nombre: "",
-					numero_documento: "",
-					monto_mensual: null,
-					ahorro_total: 0,
-					tipo_documento_id: 0,
-					rol_id: 0
 				}
 			},
-			async getUsuarios() {
-          await getData(`usuarios`)
+			async getRoles() {
+          await getData(`roles`)
               .then(res => {
-                  this.usuarios = res;
+                  this.roles = res;
               })
               .catch(error => {
                   this.$swal.fire({
@@ -292,15 +199,15 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
                       confirmButtonText: "Aceptar",
                   });
               })
-				console.table(this.usuarios);
+				console.table(this.roles);
       },
 			deletedSelect(id) {
         this.deleteId = id;
         this.dialogDelete = true;
       },
-			async eliminarUsuario(eliminar) {
+			async eliminarRol(eliminar) {
         if(eliminar){
-          await deleteData(`usuarios/${this.deleteId}`, this.deleteId)
+          await deleteData(`roles/${this.deleteId}`, this.deleteId)
             .then(res => {
               /* if(!res.isSuccess) {
                 this.$swal.fire({
@@ -330,10 +237,10 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
             this.dialogDelete = false;
             this.deleteId = 0;
             this.resetForm();
-            this.getUsuarios();
+            this.getRoles();
         }
       },
-			async crearUsuario() {
+			async crearRol() {
         this.dialog = false;
           /* this.$swal.fire({
           title: "¡Validando!",
@@ -342,7 +249,7 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
             this.$swal.showLoading();
           },
         }); */
-        await postData("usuarios", this.usuario, false)
+        await postData("roles", this.rol, false)
           .then(res => {
               /* if(!res.isSuccess) {
                 this.$swal.fire({
@@ -369,22 +276,20 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
             }); */
 						console.log(error)
           });
-        this.getUsuarios();
+        this.getRoles();
       },
-			cargarDatosUsuarioEditar(id) {
-				this.obtenerTiposDocumento();
-				this.obtenerRoles();
+			cargarDatosRolEditar(id) {
         this.dialog = true;
-        this.usuarios.forEach(usuario => {
-          if(usuario.id == id) {
-            this.usuario = usuario;
+        this.roles.forEach(rol => {
+          if(rol.id == id) {
+            this.rol = rol;
           }
         });
-				console.log(this.usuario)
+				console.log(this.rol)
         this.editId = id;
         this.editando = true;
       },
-			async editarUsario() {
+			async editarRol() {
           this.dialog = false;
           /* this.$swal.fire({
           title: "¡Validando!",
@@ -393,7 +298,7 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
             this.$swal.showLoading();
           },
         }); */
-        await putData(`usuarios/${this.editId}`, this.usuario)
+        await putData(`roles/${this.editId}`, this.rol)
           .then(res => {
               /* if(!res.isSuccess) {
                 this.$swal.fire({
@@ -421,44 +326,15 @@ import { getRoles, getTiposDocumento, getTipoDocumento } from '@/config/datosPar
 							console.log(error);
           })
       },
-			async obtenerRoles() {
-        await getRoles()
-          .then(res => {
-            if(res) {
-              this.roles = res
-            }
-          })
-      },
-			async obtenerTiposDocumento() {
-        await getTiposDocumento()
-          .then(res => {
-            if(res) {
-							console.log("res: ",res)
-              this.tiposDocumento = res
-            }
-          })
-				console.log(this.tiposDocumento)
-      },
-			async obtenerTipoDocumento(id) {
-        await getTipoDocumento(id)
-          .then(res => {
-            if(res) {
-							this.usuario.nombre_documento = res;
-            }
-          })
-      },
-
-
-		},
-		async created() {
-			await this.getUsuarios();
-		}
-	})
+	},
+	created() {
+		this.getRoles();
+	}
+    
+})
 </script>
 
 <style lang="scss" scoped>
 @import "@/scss/variables-globales.scss";
-.ancho-modal {
-	width: 60vw;
-}
+
 </style>

@@ -43,12 +43,14 @@
             </v-list-item>
             </router-link>
   
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-account</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Account</v-list-item-title>
-            </v-list-item>
+            <router-link to="/roles">
+              <v-list-item>
+              	<v-list-item-icon>
+                	<v-icon>mdi-account-multiple-plus</v-icon>
+              	</v-list-item-icon>
+              	<v-list-item-title>Roles</v-list-item-title>
+            	</v-list-item>
+            </router-link>
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
