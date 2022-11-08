@@ -25,7 +25,15 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '@/views/GestionRoles.vue')
-  }
+  },
+  {
+    path: '/usuarios/:id',
+    name: 'usuario',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '@/views/DetallesUsuario.vue')
+  },
 ]
 
 const router = new VueRouter({

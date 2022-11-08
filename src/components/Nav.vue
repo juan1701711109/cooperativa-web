@@ -51,6 +51,15 @@
               	<v-list-item-title>Roles</v-list-item-title>
             	</v-list-item>
             </router-link>
+
+						<router-link to="/historial-pagos">
+              <v-list-item>
+              	<v-list-item-icon>
+                	<v-icon>mdi-cash-sync</v-icon>
+              	</v-list-item-icon>
+              	<v-list-item-title>Pagos</v-list-item-title>
+            	</v-list-item>
+            </router-link>
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>

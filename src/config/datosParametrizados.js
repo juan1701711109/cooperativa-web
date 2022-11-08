@@ -38,3 +38,16 @@ export const getTiposDocumento = async function () {
   
       return docs;
   };
+
+  export const getCuotasUsuario = async function (id) {
+    let docs = [];
+    await getData(`pagos/usuario/${id}`)
+      .then(res => {
+          docs = res
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  
+      return docs;
+  };

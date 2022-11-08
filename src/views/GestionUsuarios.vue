@@ -36,6 +36,21 @@
 							<p>Ahorro: ${{usuario.ahorro_total}}</p>
 						</div>
 					</v-card-text>
+					<v-card-text>
+              <v-row>
+                <v-col cols="12">
+                  <v-btn
+                    tile
+                    :style="{'width':'100%'}"
+                    class="primario texto-blanco"
+                    :to="{name: 'usuario', params: {id: usuario.id}}" 
+                  > 
+                    Detalles
+                    <i class="fa-solid fa-arrow-up-right-from-square ml-2 "></i>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card-text>
 					<v-card-actions>
               <v-row>
                 <v-col cols="6">
